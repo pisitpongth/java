@@ -1,4 +1,4 @@
-package TNI_Lab.LabQuiz;
+package JavaTNI.LabQuiz;
 
 import javax.swing.JOptionPane;
 
@@ -24,9 +24,6 @@ public class Quiz2 {
 
         for (int i = 1; i <= number; i++) {
             total += i;
-            // ====================================================================================================
-            // BUILD A SUMMATION MASSAGE
-            // ====================================================================================================
             expression.append(i);
             if (i < number) {
                 expression.append(" + ");

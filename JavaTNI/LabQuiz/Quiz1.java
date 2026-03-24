@@ -1,4 +1,4 @@
-package TNI_Lab.LabQuiz;
+package JavaTNI.LabQuiz;
 
 import java.util.Scanner;
 
@@ -57,9 +57,6 @@ public class Quiz1 {
 
         int lcm = 0;
 
-        // ====================================================================================================
-        // FIND LEAST COMMON MULTIPLE USING FOR LOOP
-        // ====================================================================================================
         for (int k : list_for_number1) {
             if ((k % number1 == 0) && (k % number2 == 0)) {
                 lcm = k;
