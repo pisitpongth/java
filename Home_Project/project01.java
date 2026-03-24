@@ -1,10 +1,10 @@
-package TNI_Lab;
+package Home_Project;
 
 import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
-public class LabSheet01 {
+public class project01 {
     public static void main(String[] args) {
         double firstNumber = 0, secondNumber = 0;
         boolean validInput = false;

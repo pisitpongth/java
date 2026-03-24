@@ -1,4 +1,4 @@
-package TNI_Lab;
+package TNI_Lab.LabQuiz;
 
 import java.util.Scanner;
 

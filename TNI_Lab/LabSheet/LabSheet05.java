@@ -1,10 +1,10 @@
-package TNI_Lab;
+package TNI_Lab.LabSheet;
 
 import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
-public class LabSheet06 {
+public class LabSheet05 {
         public static void main(String[] args) {
                 final int price_per_person = 299;
                 DecimalFormat frm = new DecimalFormat("#,###.00");

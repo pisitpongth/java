@@ -1,9 +1,9 @@
-package TNI_Lab;
+package TNI_Lab.LabSheet;
 
 import java.util.Random;
 import java.util.Scanner;
 
-public class LabSheet05 {
+public class LabSheet04 {
     public static int[] random_array() {
         int[] numbers = new int[10];
         Random rand = new Random();
