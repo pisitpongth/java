@@ -2,9 +2,12 @@ import javax.swing.*;
 
 public class TicketUsed {
     public static String show_movie_list(Ticket[] tickets) {
-        return "T001: " + tickets[0].getMovie().toString() +
-                "\nT002: " + tickets[1].getMovie().toString() +
-                "\nT003: " + tickets[2].getMovie().toString();
+        String movie_list = "";
+
+        for (int i = 0; i < tickets.length; i++) {
+            movie_list += "T00" + (i + 1) + ": " + tickets[i].getMovie().toString() + "\n";
+        }
+        return movie_list;
     }
 
     public static void main(String[] args) {
@@ -24,74 +27,37 @@ public class TicketUsed {
 
             if (choice == JOptionPane.YES_OPTION) {
                 String ticket_id = JOptionPane.showInputDialog(show_movie_list(tickets) +
-                        "\n" +
                         "\nEnter a ticket id for booking:");
 
-                if (ticket_id.equalsIgnoreCase("T001")) {
-                    String menu = JOptionPane.showInputDialog("T001: " + tickets[0].getMovie().toString() +
-                            "\n" +
-                            "\nPress 1 to book a ticket" +
-                            "\nPress 2 to use a ticket" +
-                            "\nPress 3 to see a ticket status" +
-                            "\n" +
-                            "\nEnter a menu:");
+                for (int i = 0; i < tickets.length; i++) {
+                    String currentId = "T00" + (i + 1);
 
-                    if (menu.equals("1")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[0].bookTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[0].toString());
-                    } else if (menu.equals("2")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[0].useTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[0].toString());
-                    } else if (menu.equals("3")) {
-                        JOptionPane.showMessageDialog(null, tickets[0].toString());
-                    }
-                } else if (ticket_id.equalsIgnoreCase("T002")) {
-                    String menu = JOptionPane.showInputDialog("T002: " + tickets[1].getMovie().toString() +
-                            "\n" +
-                            "\nPress 1 to book a ticket" +
-                            "\nPress 2 to use a ticket" +
-                            "\nPress 3 to see a ticket status" +
-                            "\n" +
-                            "\nEnter a menu:");
+                    if (ticket_id.equalsIgnoreCase(currentId)) {
+                        String menu = JOptionPane.showInputDialog("T00" + (i + 1) + ": " + tickets[i].getMovie().toString() +
+                                "\n" +
+                                "\nPress 1 to book a ticket" +
+                                "\nPress 2 to use a ticket" +
+                                "\nPress 3 to see a ticket status" +
+                                "\n" +
+                                "\nEnter a menu:");
 
-                    if (menu.equals("1")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[1].bookTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[1].toString());
-                    } else if (menu.equals("2")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[1].useTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[1].toString());
-                    } else if (menu.equals("3")) {
-                        JOptionPane.showMessageDialog(null, tickets[0].toString());
-                    }
-                } else if (ticket_id.equalsIgnoreCase("T003")) {
-                    String menu = JOptionPane.showInputDialog("T003: " + tickets[2].getMovie().toString() +
-                            "\n" +
-                            "\nPress 1 to book a ticket" +
-                            "\nPress 2 to use a ticket" +
-                            "\nPress 3 to see a ticket status" +
-                            "\n" +
-                            "\nEnter a menu:");
-
-                    if (menu.equals("1")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[2].bookTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[2].toString());
-                    } else if (menu.equals("2")) {
-                        JOptionPane.showMessageDialog(null,
-                                tickets[2].useTicket() +
-                                        "\n--------------------" +
-                                        "\n" + tickets[2].toString());
-                    } else if (menu.equals("3")) {
-                        JOptionPane.showMessageDialog(null, tickets[0].toString());
+                        switch (menu) {
+                            case "1":
+                                JOptionPane.showMessageDialog(null,
+                                        tickets[i].bookTicket() +
+                                                "\n--------------------" +
+                                                "\n" + tickets[i].toString());
+                                break;
+                            case "2":
+                                JOptionPane.showMessageDialog(null,
+                                        tickets[i].useTicket() +
+                                                "\n--------------------" +
+                                                "\n" + tickets[i].toString());
+                                break;
+                            case "3":
+                                JOptionPane.showMessageDialog(null, tickets[i].toString());
+                                break;
+                        }
                     }
                 }
             } else {
