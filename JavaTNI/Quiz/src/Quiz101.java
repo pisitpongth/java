@@ -38,16 +38,30 @@ public class Quiz101 {
 
         System.out.println();
 
-        int LCM = 0;
-
-        for (int i = 0; i < firstNumberList.length; i++) {
-            if (firstNumberList[i] % firstNumber == 0 && firstNumberList[i] % secondNumber == 0) {
-                LCM = firstNumberList[i];
-            } else if (secondNumberList[i] % firstNumber == 0 && secondNumberList[i] % secondNumber == 0) {
-                LCM = secondNumberList[i];
-            }
-        }
+        int LCM = getLCM(firstNumber, secondNumber);
 
         System.out.println("Least Common Multiple = " + LCM);
+    }
+
+    private static int getLCM(int firstNumber, int secondNumber) {
+        int LCM = 0;
+        boolean isLoop = false;
+        int multiple1 = firstNumber;
+        int multiple2 = secondNumber;
+
+        while (!isLoop) {
+            if (multiple1 % secondNumber != 0) {
+                multiple1 += firstNumber;
+            } else if (multiple2 % firstNumber != 0) {
+                multiple2 += secondNumber;
+            } else if (multiple1 % secondNumber == 0) {
+                LCM = multiple1;
+                isLoop = true;
+            } else if (multiple2 % firstNumber == 0) {
+                LCM = multiple2;
+                isLoop = true;
+            }
+        }
+        return LCM;
     }
 }
