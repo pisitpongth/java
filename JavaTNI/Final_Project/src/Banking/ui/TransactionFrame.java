@@ -3,171 +3,161 @@ package Banking.ui;
 import Banking.logic.AccountTransaction;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.IOException;
 
-// Window for deposit, withdraw, and balance check
 public class TransactionFrame extends JFrame {
-
-    private JTextField accIdField;
-    private JTextField amountField;
-    private JLabel balanceLabel;
-    private JLabel messageLabel;
+    private JTextField accIdField, amountField;
+    private JLabel balanceLabel, messageLabel;
     private JPanel menuPanel;
     private AccountTransaction account;
 
     public TransactionFrame() {
-        setTitle("Account Transaction");
-        setSize(400, 380);
+        setTitle("Transactions");
+        setSize(420, 450);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
+
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setBorder(new EmptyBorder(15, 20, 15, 20));
+        add(mainPanel);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10);
+        gbc.insets = new Insets(6, 6, 6, 6);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
-        JLabel titleLabel = new JLabel("Account Transaction");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel titleLabel = new JLabel("Account Services", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
-        JLabel accIdLabel = new JLabel("Enter your bank account:");
-        accIdField = new JTextField(15);
-        JButton loginBtn = new JButton("Login");
+        accIdField = new JTextField();
+        JButton loginBtn = new JButton("Secure Login");
+        messageLabel = new JLabel(" ", SwingConstants.CENTER);
 
-        // Label to show login result
-        messageLabel = new JLabel(" ");
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Menu panel is hidden until the user logs in
         menuPanel = new JPanel(new GridBagLayout());
-        menuPanel.setVisible(false);
+        menuPanel.setVisible(false); // Hidden until login success
+        menuPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Actions", TitledBorder.LEFT, TitledBorder.TOP));
         buildMenuPanel();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        add(titleLabel, gbc);
+        mainPanel.add(titleLabel, gbc);
 
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        add(accIdLabel, gbc);
+        mainPanel.add(new JLabel("Account ID:"), gbc);
         gbc.gridx = 1;
-        add(accIdField, gbc);
+        mainPanel.add(accIdField, gbc);
 
         gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        add(loginBtn, gbc);
+        mainPanel.add(loginBtn, gbc);
 
         gbc.gridy = 3;
-        add(messageLabel, gbc);
+        mainPanel.add(messageLabel, gbc);
 
         gbc.gridy = 4;
-        add(menuPanel, gbc);
+        mainPanel.add(menuPanel, gbc);
 
         loginBtn.addActionListener(e -> handleLogin());
-
         setVisible(true);
     }
 
-    // Build the deposit/withdraw/check balance buttons inside the menu panel
     private void buildMenuPanel() {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 8, 5, 8);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        // Setup internal menu UI components
+        GridBagConstraints mgbc = new GridBagConstraints();
+        mgbc.insets = new Insets(10, 5, 10, 5);
+        mgbc.fill = GridBagConstraints.HORIZONTAL;
+        mgbc.weightx = 0.5;
 
-        JLabel amountLabel = new JLabel("Amount:");
-        amountField = new JTextField(12);
-
+        amountField = new JTextField();
         JButton depositBtn = new JButton("Deposit");
         JButton withdrawBtn = new JButton("Withdraw");
-        JButton checkBtn = new JButton("Check Balance");
+        JButton checkBtn = new JButton("Refresh Balance");
 
-        // Label to show the current balance
-        balanceLabel = new JLabel(" ");
-        balanceLabel.setFont(new Font("Arial", Font.BOLD, 13));
-        balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        balanceLabel = new JLabel("Balance: $0.00", SwingConstants.CENTER);
+        balanceLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        balanceLabel.setForeground(new Color(41, 128, 185));
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        menuPanel.add(amountLabel, gbc);
-        gbc.gridx = 1;
-        menuPanel.add(amountField, gbc);
+        mgbc.gridx = 0;
+        mgbc.gridy = 0;
+        menuPanel.add(new JLabel("Amount:"), mgbc);
+        mgbc.gridx = 1;
+        menuPanel.add(amountField, mgbc);
 
-        gbc.gridy = 1;
-        gbc.gridx = 0;
-        menuPanel.add(depositBtn, gbc);
-        gbc.gridx = 1;
-        menuPanel.add(withdrawBtn, gbc);
+        mgbc.gridy = 1;
+        mgbc.gridx = 0;
+        menuPanel.add(depositBtn, mgbc);
+        mgbc.gridx = 1;
+        menuPanel.add(withdrawBtn, mgbc);
 
-        gbc.gridy = 2;
-        gbc.gridx = 0;
-        gbc.gridwidth = 2;
-        menuPanel.add(checkBtn, gbc);
+        mgbc.gridy = 2;
+        mgbc.gridx = 0;
+        mgbc.gridwidth = 2;
+        menuPanel.add(checkBtn, mgbc);
 
-        gbc.gridy = 3;
-        menuPanel.add(balanceLabel, gbc);
+        mgbc.gridy = 3;
+        menuPanel.add(balanceLabel, mgbc);
 
         depositBtn.addActionListener(e -> handleDeposit());
         withdrawBtn.addActionListener(e -> handleWithdraw());
         checkBtn.addActionListener(e -> handleCheckBalance());
     }
 
-    // Check if the account exists, then show the menu
     private void handleLogin() {
         String accId = accIdField.getText().trim();
         try {
             account = new AccountTransaction(accId);
             if (account.hasAccountId()) {
-                messageLabel.setForeground(new Color(0, 128, 0));
-                messageLabel.setText("Login successful!");
+                messageLabel.setForeground(new Color(39, 174, 96));
+                messageLabel.setText("Access Granted");
                 menuPanel.setVisible(true);
                 pack();
+                setSize(420, getHeight()); // Maintain fixed width
             } else {
-                messageLabel.setForeground(Color.RED);
-                messageLabel.setText("Bank account not found...");
+                messageLabel.setForeground(new Color(192, 57, 43));
+                messageLabel.setText("Account Not Found");
                 menuPanel.setVisible(false);
             }
         } catch (IOException ex) {
-            messageLabel.setForeground(Color.RED);
             messageLabel.setText("Error: " + ex.getMessage());
         }
     }
 
-    // Add money to the account
     private void handleDeposit() {
         try {
             double amount = Double.parseDouble(amountField.getText().trim());
             account.deposit(amount);
-            balanceLabel.setText("Your balance = " + String.format("%.2f%n", account.checkBalance()));
-        } catch (NumberFormatException ex) {
-            balanceLabel.setText("Invalid amount.");
-        } catch (IOException ex) {
-            balanceLabel.setText("Error: " + ex.getMessage());
+            updateBalanceDisplay();
+        } catch (Exception ex) {
+            balanceLabel.setText("Invalid Input");
         }
     }
 
-    // Remove money from the account
     private void handleWithdraw() {
         try {
             double amount = Double.parseDouble(amountField.getText().trim());
             account.withdraw(amount);
-            balanceLabel.setText("Your balance = " + String.format("%.2f%n", account.checkBalance()));
-        } catch (NumberFormatException ex) {
-            balanceLabel.setText("Invalid amount.");
-        } catch (IOException ex) {
-            balanceLabel.setText("Error: " + ex.getMessage());
+            updateBalanceDisplay();
+        } catch (Exception ex) {
+            balanceLabel.setText("Invalid Input");
         }
     }
 
-    // Show the current balance
     private void handleCheckBalance() {
         try {
-            balanceLabel.setText("Your balance = " + String.format("%.2f%n", account.checkBalance()));
+            updateBalanceDisplay();
         } catch (IOException ex) {
-            balanceLabel.setText("Error: " + ex.getMessage());
+            balanceLabel.setText("Error");
         }
+    }
+
+    private void updateBalanceDisplay() throws IOException {
+        balanceLabel.setText("Current Balance: $" + String.format("%.2f", account.checkBalance()));
     }
 }

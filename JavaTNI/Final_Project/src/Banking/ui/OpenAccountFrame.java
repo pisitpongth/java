@@ -3,103 +3,95 @@ package Banking.ui;
 import Banking.logic.OpenNewAccount;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
 
-// Window for creating a new bank account
 public class OpenAccountFrame extends JFrame {
-
     private JTextField accIdField;
     private JTextField balanceField;
     private JLabel messageLabel;
 
     public OpenAccountFrame() {
-        setTitle("Open New Account");
-        setSize(380, 280);
+        setTitle("Create Account");
+        setSize(400, 320);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(new EmptyBorder(15, 25, 15, 25));
+        add(panel);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10);
+        gbc.insets = new Insets(8, 5, 8, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel titleLabel = new JLabel("Open New Account");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel titleLabel = new JLabel("Open New Account", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
-        JLabel accIdLabel = new JLabel("Account ID (10 digits):");
         accIdField = new JTextField(15);
-
-        JLabel balanceLabel = new JLabel("Initial Deposit Amount:");
         balanceField = new JTextField(15);
+        JButton createBtn = new JButton("Register Account");
+        createBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        createBtn.setPreferredSize(new Dimension(0, 35));
 
-        JButton createBtn = new JButton("Create Account");
+        messageLabel = new JLabel(" ", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
 
-        // Label to show success or error message
-        messageLabel = new JLabel(" ");
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
+        // UI Layout placement
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        add(titleLabel, gbc);
+        panel.add(titleLabel, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridy = 1;
-        gbc.gridx = 0;
-        add(accIdLabel, gbc);
+        panel.add(new JLabel("Account ID (10 digits):"), gbc);
         gbc.gridx = 1;
-        add(accIdField, gbc);
+        panel.add(accIdField, gbc);
 
         gbc.gridy = 2;
         gbc.gridx = 0;
-        add(balanceLabel, gbc);
+        panel.add(new JLabel("Initial Deposit:"), gbc);
         gbc.gridx = 1;
-        add(balanceField, gbc);
+        panel.add(balanceField, gbc);
 
         gbc.gridy = 3;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        add(createBtn, gbc);
+        gbc.insets = new Insets(15, 5, 5, 5);
+        panel.add(createBtn, gbc);
 
         gbc.gridy = 4;
-        add(messageLabel, gbc);
+        gbc.insets = new Insets(5, 5, 5, 5);
+        panel.add(messageLabel, gbc);
 
         createBtn.addActionListener(e -> handleCreate());
-
         setVisible(true);
     }
 
-    // Run when the user clicks Create Account
     private void handleCreate() {
         String accId = accIdField.getText().trim();
         String balanceText = balanceField.getText().trim();
 
-        // Account id must be exactly 10 characters
+        // Check if ID is exactly 10 digits
         if (accId.length() != 10) {
-            messageLabel.setForeground(Color.RED);
+            messageLabel.setForeground(new Color(192, 57, 43));
             messageLabel.setText("Account ID must be exactly 10 digits.");
             return;
         }
 
-        // Balance must be a valid number
-        double balance;
         try {
-            balance = Double.parseDouble(balanceText);
-        } catch (NumberFormatException ex) {
-            messageLabel.setForeground(Color.RED);
-            messageLabel.setText("Invalid deposit amount.");
-            return;
-        }
-
-        // Try to create and save the account
-        try {
+            double balance = Double.parseDouble(balanceText);
             OpenNewAccount account = new OpenNewAccount(accId, balance);
             String result = account.recordAccount();
-            messageLabel.setForeground(new Color(0, 128, 0));
+            messageLabel.setForeground(new Color(39, 174, 96));
             messageLabel.setText(result);
+        } catch (NumberFormatException ex) {
+            messageLabel.setForeground(new Color(192, 57, 43));
+            messageLabel.setText("Invalid deposit amount.");
         } catch (IOException ex) {
-            messageLabel.setForeground(Color.RED);
+            messageLabel.setForeground(new Color(192, 57, 43));
             messageLabel.setText("Error: " + ex.getMessage());
         }
     }
