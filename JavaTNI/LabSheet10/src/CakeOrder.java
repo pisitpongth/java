@@ -50,7 +50,7 @@ public class CakeOrder {
         int donutsPiece = Integer.parseInt(sc.nextLine());
 
         System.out.print("Do you want to add Sprinkles [y/Y]? ");
-        String choice = sc.next();
+        String choice = sc.nextLine();
 
         boolean isAddSprinkles;
 
